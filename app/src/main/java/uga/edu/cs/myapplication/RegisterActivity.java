@@ -16,6 +16,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+/*
+    This class handles the registering of new user accounts. If the
+    account already exists then app wont move to the next activity.
+    Standard checks to see if both fields are blank and if the
+    password is less than 6 characters.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText email;
@@ -56,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(RegisterActivity.this, "Successfully Registered", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    finish();
                 } else {
                     Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                 }

@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/*
+    This class handles the logging in of already existing users.
+    The process of checking the credentials in the users section
+    of the database is entirely offloaded to firebase.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText userEmail;

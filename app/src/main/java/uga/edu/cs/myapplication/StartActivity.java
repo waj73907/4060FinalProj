@@ -7,6 +7,11 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+    This is the activity that launches when you first start up the app.
+    The user is presented with a login and register button that will
+    take them to the corresponding screens.
+ */
 public class StartActivity extends AppCompatActivity {
 
     private Button loginButton;
