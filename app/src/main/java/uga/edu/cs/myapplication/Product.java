@@ -10,6 +10,9 @@ import java.util.Map;
     bag. The key is the unique string that firebase assigns to all objects in
     the shopping list. The products are put into the database by assigning the
     name, price and checkout boolean to keys of a hashmap.
+
+    If you want to take an item out of the checkout bag, just change the
+    checkout status to false using the method found in the database manager class.
  */
 public class Product {
 

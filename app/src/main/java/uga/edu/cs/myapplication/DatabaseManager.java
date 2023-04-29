@@ -2,15 +2,9 @@ package uga.edu.cs.myapplication;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 /*
@@ -36,10 +30,6 @@ public class DatabaseManager {
 
     }
 
-    public ArrayList<Product> returnList(ArrayList<Product> shoppingList) {
-        return shoppingList;
-    }
-
     public DatabaseReference getDbReference() {
         return dbReference;
     }
@@ -49,7 +39,9 @@ public class DatabaseManager {
 
     private DatabaseReference dbReference = db.getReference();
 
-    public ArrayList<Product> shoppingList;
+    public ArrayList<Product> shoppingList = new ArrayList<>();
+
+    public ArrayList<Product> checkoutBag = new ArrayList<>();
 
     public boolean addProduct(Product p) {
         try {
@@ -57,7 +49,6 @@ public class DatabaseManager {
             String key = dbReference.push().getKey();
             p.setProductKey(key);
             dbReference.child(key).setValue(p.toMap());
-            this.shoppingList.add(p);
             Log.d(DBM_DEBUG, "PRODUCT ADD SUCCESSFUL");
         } catch(Exception e) {
             Log.d(DBM_DEBUG, e.getMessage());
@@ -74,7 +65,6 @@ public class DatabaseManager {
             this.updateReference();
             String key = p.getProductKey();
             dbReference.child(key).child("name").setValue(name);
-            p.setName(name);
             return true;
         } catch (Exception e) {
             Log.d(dbg, "ERROR UPDATING NAME: " + e.getMessage());
@@ -87,7 +77,6 @@ public class DatabaseManager {
             this.updateReference();
             String key = p.getProductKey();
             dbReference.child(key).child("price").setValue(price);
-            p.setPrice(price);
             return true;
         } catch (Exception e) {
             Log.d(dbg, "ERROR UPDATING PRICE: " + e.getMessage());
@@ -99,7 +88,7 @@ public class DatabaseManager {
         this.dbReference = db.getReference("list");
     }
 
-    public boolean deleteProduct(Product p) {
+    public boolean deleteProductFromShoppingList(Product p) {
         try {
             this.updateReference();
             String key = p.getProductKey();
@@ -109,5 +98,25 @@ public class DatabaseManager {
             Log.d(dbg, "ERROR DELETING PRODUCT: " + e.getMessage());
             return false;
         }
+    }
+    public boolean updateItemCheckoutStatus(Product p, boolean status) {
+        try {
+            this.updateReference();
+            dbReference.child(p.getProductKey()).child("Checkout").setValue(status);
+            return true;
+        } catch (Exception e) {
+            Log.d(dbg, "ERROR UPDATING ITEM CHECKOUT STATUS: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public Product getProductFromShoppingList(String key) {
+        Product returnProduct = null;
+        for (Product p : this.shoppingList) {
+            if (p.getProductKey().equals(key)) {
+                return returnProduct = p;
+            }
+        }
+        return null;
     }
 }
