@@ -46,4 +46,9 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-database'
 
+    // Firebase Core SDK
+    implementation 'com.google.firebase:firebase-core:20.0.1'
+
+    // Firebase Authentication SDK
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
 }

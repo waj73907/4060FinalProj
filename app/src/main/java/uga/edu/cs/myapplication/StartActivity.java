@@ -7,31 +7,16 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+
 public class StartActivity extends AppCompatActivity {
 
-    private Button loginButton;
-    private Button registerButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        FirebaseApp.initializeApp(this);
 
-        loginButton = findViewById(R.id.LoginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(StartActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-        registerButton = findViewById(R.id.RegisterButton);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(StartActivity.this, RegisterActivity.class));
-                finish();
-            }
-        });
-
+        // getSupportActionBar().hide();
     }
 }
