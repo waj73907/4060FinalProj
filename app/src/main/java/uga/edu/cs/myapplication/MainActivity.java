@@ -23,17 +23,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
 
     private final String dbg = "MAIN_ACTIVITY";
-
-    private Button loginButton;
-    private Button registerButton;
     public DatabaseManager manager = new DatabaseManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
-
-/*
+        Product p = new Product("Eggs", 5);
+        manager.addProduct(p);
+        /*
     Setting a value listener for the "list" branch of the database.
     Everytime any form of data is changed on the "List" branch this listener
     is called and the onDataChange method is executed. This way we can ensure
@@ -94,6 +91,7 @@ public class MainActivity extends AppCompatActivity  {
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
+
             }
 
             @Override

@@ -32,6 +32,11 @@ public class DatabaseManager {
 
     public DatabaseManager() {
 
+
+    }
+
+    private void returnShoppingList(ArrayList<Product> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 
     public DatabaseReference getDbReference() {
