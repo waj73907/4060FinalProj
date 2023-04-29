@@ -31,11 +31,19 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        manager.updateReference();
-        Product p = new Product("Eggs", 5);
 
 
+/*
+    Setting a value listener for the "list" branch of the database.
+    Everytime any form of data is changed on the "List" branch this listener
+    is called and the onDataChange method is executed. This way we can ensure
+    that the shopping list and checkoutBag inside of the DatabaseManager
+    object are the most up to date that they can be with the product's
+    key, name, price, checkout status and purchased status.
 
+    The caveat to using the valueEvent listener is detailed below in the
+    3 block comment above the total roommate cost variable.
+ */
         ValueEventListener listListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -78,16 +86,14 @@ public class MainActivity extends AppCompatActivity  {
                   So anytime a product is added, the list
                   is rebuilt from the ground up.
 
-                  Also with the cost just assuming there are four roomates
+                  Also with the cost just assuming there are four roommates
                   since theres nothing in the stories about needing to specify
-                  the number of roomates in the app.
+                  the number of roommates in the app.
                 */
                 double perRoomateCost = Math.round((totalCost / 4.0) * 100.0) / 100.0;
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
-                String key = manager.shoppingList.get(0).getProductKey();
-                manager.updateItemCheckoutStatus(manager.getProductFromShoppingList(key), true);
             }
 
             @Override
@@ -98,5 +104,6 @@ public class MainActivity extends AppCompatActivity  {
         manager.getDbReference().addValueEventListener(listListener);
 
     }
+
 
 }
