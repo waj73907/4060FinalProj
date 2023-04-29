@@ -32,9 +32,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         manager.updateReference();
-
-
-
+        Product p = new Product("Eggs", 5);
 
 
 
@@ -88,7 +86,8 @@ public class MainActivity extends AppCompatActivity  {
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
-
+                String key = manager.shoppingList.get(0).getProductKey();
+                manager.updateItemCheckoutStatus(manager.getProductFromShoppingList(key), true);
             }
 
             @Override

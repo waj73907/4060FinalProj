@@ -27,6 +27,17 @@ public class Product {
 
     private boolean Checkout;
 
+
+    public boolean isPurchased() {
+        return Purchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        Purchased = purchased;
+    }
+
+    private boolean Purchased;
+
     public Product() {
 
     }
@@ -35,6 +46,7 @@ public class Product {
         this.name = name;
         this.price = price;
         this.Checkout = false;
+        this.Purchased = false;
     }
 
     public String getName() {
@@ -68,20 +80,25 @@ public class Product {
         this.Checkout = inCheckout;
     }
 
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", this.getName());
         result.put("price", this.getPrice());
         result.put("Checkout", this.isCheckout());
+        result.put("Purchased", this.isPurchased());
+        result.put("productKey", this.getProductKey());
         return result;
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "productKey='" + productKey + '\'' +
+                ", name='" + name + '\'' +
                 ", price=" + price +
-                ", isInCheckout=" + Checkout +
+                ", Checkout=" + Checkout +
+                ", Purchased=" + Purchased +
                 '}';
     }
 }

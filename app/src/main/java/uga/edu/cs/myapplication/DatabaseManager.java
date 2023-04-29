@@ -76,7 +76,7 @@ public class DatabaseManager {
         try {
             this.updateReference();
             String key = p.getProductKey();
-            dbReference.child(key).child("price").setValue(price);
+            this.dbReference.child(key).child("price").setValue(price);
             return true;
         } catch (Exception e) {
             Log.d(dbg, "ERROR UPDATING PRICE: " + e.getMessage());
@@ -110,13 +110,27 @@ public class DatabaseManager {
         }
     }
 
+    public boolean updateItemPurchasedStatus(Product p, boolean status) {
+        try {
+            this.updateReference();
+            dbReference.child(p.getProductKey()).child("Purchased").setValue(status);
+            return true;
+        } catch (Exception e) {
+            Log.d(dbg, "ERROR UPDATING ITEM CHECKOUT STATUS: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+
+
     public Product getProductFromShoppingList(String key) {
         Product returnProduct = null;
         for (Product p : this.shoppingList) {
             if (p.getProductKey().equals(key)) {
-                return returnProduct = p;
+                returnProduct = p;
             }
         }
-        return null;
+        return returnProduct;
     }
 }
