@@ -130,7 +130,9 @@ public class DatabaseManager {
         }
     }
 
+    public void setEventListener() {
 
+    }
 
 
     public Product getProductFromShoppingList(String key) {
