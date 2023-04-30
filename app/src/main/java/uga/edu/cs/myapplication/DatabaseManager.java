@@ -52,6 +52,8 @@ public class DatabaseManager {
 
     public ArrayList<Product> checkoutBag = new ArrayList<>();
 
+    public ArrayList<Product> purchaseList = new ArrayList<>();
+
     public boolean addProduct(Product p) {
         try {
             this.updateReference();
@@ -130,10 +132,12 @@ public class DatabaseManager {
         }
     }
 
-    public void setEventListener() {
-
+    public void writeCheckoutBag(ArrayList<Product> checkoutBag, double totalCost) {
+        this.dbReference = db.getReference("purchased");
+        String key = dbReference.push().getKey();
+        dbReference.child(key).setValue(checkoutBag);
+        dbReference.child(key).child("cost").setValue(totalCost);
     }
-
 
     public Product getProductFromShoppingList(String key) {
         Product returnProduct = null;

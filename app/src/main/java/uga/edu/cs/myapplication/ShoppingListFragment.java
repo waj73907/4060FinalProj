@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,22 @@ public class ShoppingListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         DatabaseManager manager = new DatabaseManager();
         manager.updateReference();
+
+        Product p = new Product("Lettuce", 5);
+        Product p2 = new Product("Tomatoes", 5);
+        Product p3 = new Product("Bread", 5);
+        Product p4 = new Product("Milk", 5);
+        Product p5 = new Product("Eggs", 5);
+        /*
+        manager.addProduct(p);
+        manager.addProduct(p2);
+        manager.addProduct(p3);
+        manager.addProduct(p4);
+        manager.addProduct(p5);
+
+
+        */
+
         ValueEventListener listListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -51,6 +68,7 @@ public class ShoppingListFragment extends Fragment {
                  */
                 manager.shoppingList.clear();
                 manager.checkoutBag.clear();
+                manager.purchaseList.clear();
 
                 double totalCost = 0;
                 for (DataSnapshot ds : snapshot.getChildren()) {
@@ -67,6 +85,7 @@ public class ShoppingListFragment extends Fragment {
                         manager.checkoutBag.add(product);
                         totalCost += product.getPrice();
                     }
+
 
 
                 }
@@ -103,7 +122,7 @@ public class ShoppingListFragment extends Fragment {
     }
 
     private void updateShoppingList(ArrayList<Product> shoppingList) {
-        tv.setText(shoppingList.get(0).getName() + " " + String.valueOf(shoppingList.get(0).getPrice()));
+        tv.setText(shoppingList.get(0).getName() + " $" + String.valueOf(shoppingList.get(0).getPrice()));
     }
 
     @Override
