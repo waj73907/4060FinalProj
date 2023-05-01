@@ -59,8 +59,10 @@ public class ShoppingListFragment extends Fragment {
         manager.addProduct(p4);
         manager.addProduct(p5);
 
+         */
 
-        */
+
+
 
         ValueEventListener listListener = new ValueEventListener() {
             @Override
@@ -114,7 +116,7 @@ public class ShoppingListFragment extends Fragment {
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
-                updateShoppingList(manager.shoppingList);
+                updateShoppingList(manager.shoppingList, manager);
             }
 
             @Override
@@ -125,11 +127,11 @@ public class ShoppingListFragment extends Fragment {
         manager.getDbReference().addValueEventListener(listListener);
     }
 
-    private void updateShoppingList(ArrayList<Product> shoppingList) {
+    private void updateShoppingList(ArrayList<Product> shoppingList, DatabaseManager manager) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this.context );
         recyclerView.setLayoutManager(layoutManager);
-
-        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, this.context);
+        this.context = getActivity();
+        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, manager,  this.context);
         recyclerView.setAdapter(recyclerAdapter);
 
         this.addProductBtn.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -19,9 +20,12 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
     private Context context;
 
-    public ProductRecyclerAdapter(List<Product> shoppingList, Context context) {
+    private DatabaseManager manager;
+
+    public ProductRecyclerAdapter(List<Product> shoppingList, DatabaseManager manager, Context context) {
         this.productList = shoppingList;
         this.context = context;
+        this.manager = manager;
     }
     class ProductHolder extends RecyclerView.ViewHolder {
         TextView ProductName;
@@ -47,11 +51,23 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         Product product = productList.get( position );
 
 
-        String productName = product.getName();
-        int productPrice = product.getPrice();
+        String name = product.getName();
+        String key = product.getProductKey();
+        int price = product.getPrice();
+        boolean checkout = product.isCheckout();
+        boolean purchased = product.isPurchased();
+
 
         holder.ProductName.setText(product.getName());
         holder.ProductPrice.setText("$" + String.valueOf(product.getPrice()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EditProductDialogFragment editProductFragment = EditProductDialogFragment.newInstance(holder.getAdapterPosition(), key, name, price, checkout, purchased, manager);
+                editProductFragment.show( ((AppCompatActivity)context).getSupportFragmentManager(), null);
+            }
+        });
 
     }
 
