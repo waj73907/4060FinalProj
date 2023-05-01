@@ -1,17 +1,19 @@
 package uga.edu.cs.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ShoppingListFragment extends Fragment {
-    private TextView tv;
+    private Context context;
+    private RecyclerView recyclerView;
+    private Button addProductBtn;
     private final String dbg = "SHOPPING LIST FRAGMENT";
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -122,7 +126,19 @@ public class ShoppingListFragment extends Fragment {
     }
 
     private void updateShoppingList(ArrayList<Product> shoppingList) {
-        tv.setText(shoppingList.get(0).getName() + " $" + String.valueOf(shoppingList.get(0).getPrice()));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this.context );
+        recyclerView.setLayoutManager(layoutManager);
+
+        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, this.context);
+        recyclerView.setAdapter(recyclerAdapter);
+
+        this.addProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new AddProductDialogFragment(new DatabaseManager());
+                fragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
     }
 
     @Override
@@ -135,7 +151,7 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tv = view.findViewById(R.id.textView4);
-
+        recyclerView = view.findViewById(R.id.recyclerView);
+        addProductBtn = view.findViewById(R.id.addProductBtn);
     }
 }
