@@ -2,11 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ShoppingList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ShoppingListFragment">
+    tools:context=".CheckoutBagFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,43 +13,48 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Shopping List"
+            android:text="Cart"
             android:textSize="34sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/checkoutView"
             android:layout_width="match_parent"
-            android:layout_height="548dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="562dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="72dp">
+            android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/viewCartBtn"
+                android:id="@+id/purchasesBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Cart"
+                android:text="Purchases"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/addProductBtn"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/addProductBtn"
+                android:id="@+id/checkoutBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Product"
+                android:text="Checkout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/viewCartBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/backToListBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/checkoutBtn"
+                app:layout_constraintStart_toEndOf="@+id/purchasesBtn"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

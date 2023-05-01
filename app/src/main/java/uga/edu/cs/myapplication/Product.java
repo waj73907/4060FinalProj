@@ -1,5 +1,6 @@
 package uga.edu.cs.myapplication;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
     If you want to take an item out of the checkout bag, just change the
     checkout status to false using the method found in the database manager class.
  */
-public class Product {
+public class Product implements Serializable {
 
 
 

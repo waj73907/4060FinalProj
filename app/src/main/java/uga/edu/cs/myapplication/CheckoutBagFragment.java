@@ -1,6 +1,5 @@
 package uga.edu.cs.myapplication;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,35 +21,48 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ShoppingListFragment extends Fragment {
-    private Context context;
 
-    private RecyclerView recyclerView;
-    private Button addProductBtn;
-    private Button checkoutBagBtn;
+public class CheckoutBagFragment extends Fragment {
+
+
+
+    private static final String dbg = "CheckoutBagFragment";
+    private ArrayList<Product> checkoutList;
+    private Button purchasesBtn;
+
+    private Button checkoutBtn;
+    private Button backToListBtn;
 
     private RecyclerView checkoutView;
-    private Button checkoutBtn;
-    private Button purchasesBtn;
-    private final String dbg = "SHOPPING LIST FRAGMENT";
-    public ShoppingListFragment() {
+    public CheckoutBagFragment() {
         // Required empty public constructor
     }
 
-    /*
-   Setting a value listener for the "list" branch of the database.
-   Everytime any form of data is changed on the "List" branch this listener
-   is called and the onDataChange method is executed. This way we can ensure
-   that the shopping list and checkoutBag inside of the DatabaseManager
-   object are the most up to date that they can be with the product's
-   key, name, price, checkout status and purchased status.
+    public CheckoutBagFragment(ArrayList<Product> checkoutList) {
+        this.checkoutList = checkoutList;
+    }
 
-   The caveat to using the valueEvent listener is detailed below in the
-   3 block comment above the total roommate cost variable.
-*/
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        purchasesBtn = view.findViewById(R.id.purchasesBtn);
+        checkoutBtn = view.findViewById(R.id.checkoutBtn);
+        checkoutView = view.findViewById(R.id.checkoutView);
+        backToListBtn = view.findViewById(R.id.backToListBtn);
+
+
+
+
+
         DatabaseManager manager = new DatabaseManager();
         manager.updateReference();
         /*
@@ -125,7 +136,7 @@ public class ShoppingListFragment extends Fragment {
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
-                updateShoppingList(manager.shoppingList, manager.checkoutBag);
+                updateCheckoutList(manager.checkoutBag);
 
 
             }
@@ -138,48 +149,30 @@ public class ShoppingListFragment extends Fragment {
         manager.getDbReference().addValueEventListener(listListener);
     }
 
-
-
-    private void updateShoppingList(ArrayList<Product> shoppingList, ArrayList<Product> checkoutList) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this.context );
-        recyclerView.setLayoutManager(layoutManager);
-        this.context = getActivity();
-        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, this.context);
-        recyclerView.setAdapter(recyclerAdapter);
-        checkoutBagBtn.setOnClickListener(new View.OnClickListener() {
+    private void updateCheckoutList(ArrayList<Product> checkoutBag) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.getContext());
+        checkoutView.setLayoutManager(layoutManager);
+        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(checkoutList, getContext());
+        checkoutView.setAdapter(recyclerAdapter);
+        backToListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new CheckoutBagFragment(checkoutList);
+                Fragment fragment = new ShoppingListFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
-                fragmentTransaction.addToBackStack("ShoppingList Fragment");
                 fragmentTransaction.commit();
 
             }
         });
-        this.addProductBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment fragment = new AddProductDialogFragment(new DatabaseManager());
-                fragment.show(getActivity().getSupportFragmentManager(), null);
-            }
-        });
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_list, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        addProductBtn = view.findViewById(R.id.addProductBtn);
-        checkoutBagBtn = view.findViewById(R.id.viewCartBtn);
-
+        return inflater.inflate(R.layout.fragment_checkout_bag, container, false);
     }
 }
