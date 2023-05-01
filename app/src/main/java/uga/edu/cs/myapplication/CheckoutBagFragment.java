@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -112,6 +115,10 @@ public class CheckoutBagFragment extends Fragment {
                         totalCost += product.getPrice();
                     }
 
+                    if (product.isPurchased()) {
+                        manager.purchaseList.add(product);
+                    }
+
 
 
                 }
@@ -136,7 +143,7 @@ public class CheckoutBagFragment extends Fragment {
                 Log.d(dbg, "LOGGING SHOPPING LIST: " + manager.shoppingList.toString());
                 Log.d(dbg, "LOGGING CHECKOUT BAG: " + manager.checkoutBag.toString());
                 Log.d(dbg, "LOGGING PerRoomate Cost: " + perRoomateCost);
-                updateCheckoutList(manager.checkoutBag);
+                updateCheckoutList(manager.checkoutBag, perRoomateCost, manager.purchaseList);
 
 
             }
@@ -149,11 +156,25 @@ public class CheckoutBagFragment extends Fragment {
         manager.getDbReference().addValueEventListener(listListener);
     }
 
-    private void updateCheckoutList(ArrayList<Product> checkoutBag) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+    private void updateCheckoutList(ArrayList<Product> checkoutBag, double perRoomateCost, ArrayList<Product> purchaseList) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.getContext());
         checkoutView.setLayoutManager(layoutManager);
         ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(checkoutList, getContext());
         checkoutView.setAdapter(recyclerAdapter);
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Total Cost: $" + String.valueOf(perRoomateCost * 4) + ", Per Roommate Cost: $" + String.valueOf(perRoomateCost), Toast.LENGTH_LONG).show();
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference dbRef = db.getReference().child("list");
+                for (int i = 0; i < checkoutBag.size(); i++) {
+                    String key = checkoutBag.get(i).getProductKey();
+                    dbRef.child(key).child("Checkout").setValue(false);
+                    dbRef.child(key).child("Purchased").setValue(true);
+                    dbRef.child(key).removeValue();
+                }
+            }
+        });
         backToListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
