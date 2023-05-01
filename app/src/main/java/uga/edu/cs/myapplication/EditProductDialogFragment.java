@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,17 +86,34 @@ public class EditProductDialogFragment extends DialogFragment {
         builder.setView(layout);
         builder.setTitle("Edit Product");
 
-
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        if (checkout == false) {
+            builder.setNegativeButton("Add to Cart", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference dbReference = db.getReference().child("list").child(key);
+                    dbReference.child("Checkout").setValue(true);
+                    dismiss();
+                    Toast.makeText(getActivity(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if (checkout == true) {
+            builder.setNegativeButton("Remove from Cart", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference dbRef = db.getReference().child("list").child(key);
+                    dbRef.child("Checkout").setValue(false);
+                    dismiss();
+                    Toast.makeText(getActivity(), "Item Removed from Cart", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        
 
         builder.setPositiveButton("SAVE", new SaveButtonClickListener() );
 
-        //builder.setNeutralButton("DEKETE", new DeleteButtonClickListener() );
+        builder.setNeutralButton("DELETE", new DeleteButtonClickListener() );
 
         return builder.create();
     }
@@ -110,6 +128,17 @@ public class EditProductDialogFragment extends DialogFragment {
             dbReference.child("name").setValue(name);
             dbReference.child("price").setValue(Integer.valueOf(price));
             dismiss();
+        }
+    }
+    
+    private class DeleteButtonClickListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            DatabaseReference dbRef = db.getReference().child("list").child(key);
+            dbRef.removeValue();
+            dismiss();
+            Toast.makeText(getActivity(), "Product Removed", Toast.LENGTH_SHORT).show();
         }
     }
 }

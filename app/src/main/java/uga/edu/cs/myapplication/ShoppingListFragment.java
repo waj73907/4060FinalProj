@@ -25,6 +25,7 @@ public class ShoppingListFragment extends Fragment {
     private Context context;
     private RecyclerView recyclerView;
     private Button addProductBtn;
+    private Button addToBagBtn;
     private final String dbg = "SHOPPING LIST FRAGMENT";
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -46,13 +47,14 @@ public class ShoppingListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         DatabaseManager manager = new DatabaseManager();
         manager.updateReference();
-
+        /*
         Product p = new Product("Lettuce", 5);
         Product p2 = new Product("Tomatoes", 5);
         Product p3 = new Product("Bread", 5);
         Product p4 = new Product("Milk", 5);
         Product p5 = new Product("Eggs", 5);
-        /*
+
+
         manager.addProduct(p);
         manager.addProduct(p2);
         manager.addProduct(p3);
@@ -131,7 +133,7 @@ public class ShoppingListFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this.context );
         recyclerView.setLayoutManager(layoutManager);
         this.context = getActivity();
-        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, manager,  this.context);
+        ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(shoppingList, this.context);
         recyclerView.setAdapter(recyclerAdapter);
 
         this.addProductBtn.setOnClickListener(new View.OnClickListener() {

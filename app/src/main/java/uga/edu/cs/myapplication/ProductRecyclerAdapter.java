@@ -22,10 +22,13 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
     private DatabaseManager manager;
 
-    public ProductRecyclerAdapter(List<Product> shoppingList, DatabaseManager manager, Context context) {
+
+
+    public ProductRecyclerAdapter(List<Product> shoppingList, Context context) {
         this.productList = shoppingList;
         this.context = context;
-        this.manager = manager;
+
+
     }
     class ProductHolder extends RecyclerView.ViewHolder {
         TextView ProductName;
@@ -39,6 +42,8 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         }
     }
 
+
+
     @NonNull
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,6 +56,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         Product product = productList.get( position );
 
 
+
         String name = product.getName();
         String key = product.getProductKey();
         int price = product.getPrice();
@@ -60,6 +66,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
         holder.ProductName.setText(product.getName());
         holder.ProductPrice.setText("$" + String.valueOf(product.getPrice()));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,3 +82,4 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         return productList.size();
     }
 }
+
