@@ -157,7 +157,7 @@ public class CheckoutBagFragment extends Fragment {
     }
 
     private void updateCheckoutList(ArrayList<Product> checkoutBag, double perRoomateCost, ArrayList<Product> purchaseList) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         checkoutView.setLayoutManager(layoutManager);
         ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(checkoutList, getContext());
         checkoutView.setAdapter(recyclerAdapter);

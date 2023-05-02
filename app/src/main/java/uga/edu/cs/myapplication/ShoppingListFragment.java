@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -29,6 +31,7 @@ public class ShoppingListFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button addProductBtn;
     private Button checkoutBagBtn;
+    private Button logOut;
 
     private RecyclerView checkoutView;
     private Button checkoutBtn;
@@ -165,6 +168,20 @@ public class ShoppingListFragment extends Fragment {
                 fragment.show(getActivity().getSupportFragmentManager(), null);
             }
         });
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = new LoginFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+                fragmentTransaction.addToBackStack("Login Fragment");
+                fragmentTransaction.commit();            }
+        });
     }
 
     @Override
@@ -180,6 +197,7 @@ public class ShoppingListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         addProductBtn = view.findViewById(R.id.addProductBtn);
         checkoutBagBtn = view.findViewById(R.id.viewCartBtn);
+        logOut = view.findViewById(R.id.logOut);
 
     }
 }
