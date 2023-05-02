@@ -24,10 +24,13 @@ public class PurchaseRecyclerAdapter extends RecyclerView.Adapter<PurchaseRecycl
         TextView totalCost;
         TextView perRoomate;
 
+        TextView dateCompleted;
+
         public PurchaseHolder(View itemView) {
             super(itemView);
             totalCost = itemView.findViewById(R.id.totalPrice);
             perRoomate = itemView.findViewById(R.id.perRoomate);
+            dateCompleted = itemView.findViewById(R.id.datePurchased);
         }
     }
 
@@ -45,9 +48,11 @@ public class PurchaseRecyclerAdapter extends RecyclerView.Adapter<PurchaseRecycl
 
         double totalPrice = p.getTotalCost();
         double perRoomate = p.getPerRoomateCost();
+        String dateCompleted = p.getDatePurchased();
 
-        holder.totalCost.setText("$" + totalPrice);
-        holder.perRoomate.setText("$" + perRoomate);
+        holder.totalCost.setText("Total Cost: $" + totalPrice);
+        holder.perRoomate.setText("Price Per Roomate $" + perRoomate);
+        holder.dateCompleted.setText(dateCompleted);
 
     }
 
