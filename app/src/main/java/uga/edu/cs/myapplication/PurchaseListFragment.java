@@ -75,7 +75,7 @@ public class PurchaseListFragment extends Fragment {
         cartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new CheckoutBagFragment();
+                Fragment fragment = new CheckoutBagFragment(checkoutList);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
