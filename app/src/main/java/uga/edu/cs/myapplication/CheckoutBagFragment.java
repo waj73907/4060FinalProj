@@ -115,9 +115,7 @@ public class CheckoutBagFragment extends Fragment {
                         totalCost += product.getPrice();
                     }
 
-                    if (product.isPurchased()) {
-                        manager.purchaseList.add(product);
-                    }
+
 
 
 
@@ -161,6 +159,18 @@ public class CheckoutBagFragment extends Fragment {
         checkoutView.setLayoutManager(layoutManager);
         ProductRecyclerAdapter recyclerAdapter = new ProductRecyclerAdapter(checkoutList, getContext());
         checkoutView.setAdapter(recyclerAdapter);
+
+        purchasesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new PurchaseListFragment(checkoutBag);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+
+                fragmentTransaction.commit();
+            }
+        });
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,6 +183,8 @@ public class CheckoutBagFragment extends Fragment {
                     dbRef.child(key).child("Purchased").setValue(true);
                     dbRef.child(key).removeValue();
                 }
+                Purchase purchase = new Purchase(perRoomateCost * 4, perRoomateCost);
+                purchase.addToDB();
             }
         });
         backToListBtn.setOnClickListener(new View.OnClickListener() {
